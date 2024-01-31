@@ -1,0 +1,10 @@
+npm install @openapitools/openapi-generator-cli -g
+npx openapi-generator-cli generate -i http://moneybox.ddns.net/api/v1/schema/ -g python -o moneybox
+pip install setuptools
+pip install wheel
+cd moneybox
+изменить setup.py (name, version, author, author_email)
+python setup.py sdist bdist_wheel
+pip install twine
+twine upload --repository pypi dist/* (по API токену)
+pip install moneybox
