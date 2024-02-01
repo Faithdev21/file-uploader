@@ -25,6 +25,9 @@ textract = "^1.6.5"
 pydub = "^0.25.1"
 pymupdf = "^1.23.20"
 django-celery-results = "^2.5.1"
+ffmpeg = "^1.4"
+librosa = "^0.10.1"
+ffprobe = "^0.5"
 
 
 [tool.poetry.group.dev.dependencies]

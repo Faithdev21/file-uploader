@@ -1,10 +1,14 @@
+import os
+
 from celery import shared_task
+from pydub import AudioSegment
+from pydub.playback import play
+
 from files.models import File
 import magic
 from PIL import Image
 import textract
 import fitz
-from pydub import AudioSegment
 
 
 @shared_task
@@ -14,14 +18,12 @@ def process_file(file_id):
         mime = magic.Magic()
         file_type = mime.from_buffer(file_instance.file.read(1024))
 
-        if 'image' in file_type:
+        if 'image' in file_type.lower():
             process_image(file_instance)
-        elif 'text' in file_type:
+        elif 'text' in file_type.lower():
             process_text(file_instance)
-        elif 'pdf' in file_type:
+        elif 'pdf' in file_type.lower():
             process_pdf(file_instance)
-        elif 'audio' in file_type:
-            process_audio(file_instance)
         else:
             raise ValueError("Unsupported file type")
 
@@ -54,23 +56,21 @@ def process_text(file_instance):
 
 
 def process_pdf(file_instance):
-    """Обработка PDF-файла (пример: извлечение текста)."""
+    """Обработка PDF-файла (пример: извлечение текста в txt файл)."""
     try:
         with fitz.open(file_instance.file.path) as pdf_doc:
             text = ""
             for page_num in range(pdf_doc.page_count):
                 page = pdf_doc[page_num]
                 text += page.get_text()
-            print(f"Extracted text from PDF: {text}")
+
+            base_name, ext = os.path.splitext(file_instance.file.name)
+            text_file_name = base_name + "_text.txt"
+            text_file_path = os.path.join("", text_file_name)
+
+            with open(text_file_path, "w", encoding="utf-8") as text_file:
+                text_file.write(text)
+
+            print(f"Extracted text from PDF and saved to: {text_file_path}")
     except Exception as e:
         raise ValueError(f"Error processing PDF: {e}")
-
-
-def process_audio(file_instance):
-    """Обработка аудиофайла (пример: конвертация в MP3)."""
-    try:
-        audio = AudioSegment.from_file(file_instance.file.path)
-        audio.export(file_instance.file.path, format="mp3")
-        print("Audio file processed")
-    except Exception as e:
-        raise ValueError(f"Error processing audio: {e}")
