@@ -18,7 +18,14 @@ celery = "^5.2.2"
 django-celery-beat = "^2.5.0"
 kombu = "^5.2.2"
 redis = "^5.0.1"
+python-magic = "^0.4.27"
+pillow = "^10.2.0"
 
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.0.0"
+black = "^23.12.1"
+isort = "^5.13.2"
 
 [build-system]
 requires = ["poetry-core"]
