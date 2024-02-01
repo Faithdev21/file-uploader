@@ -5,7 +5,6 @@ from PIL import Image
 import textract
 import fitz
 from pydub import AudioSegment
-import cv2
 
 
 @shared_task
@@ -23,8 +22,6 @@ def process_file(file_id):
             process_pdf(file_instance)
         elif 'audio' in file_type:
             process_audio(file_instance)
-        elif 'video' in file_type:
-            process_video(file_instance)
         else:
             raise ValueError("Unsupported file type")
 
@@ -77,18 +74,3 @@ def process_audio(file_instance):
         print("Audio file processed")
     except Exception as e:
         raise ValueError(f"Error processing audio: {e}")
-
-
-def process_video(file_instance):
-    """Обработка видеофайла (пример: извлечение кадров)."""
-    try:
-        cap = cv2.VideoCapture(file_instance.file.path)
-        success, image = cap.read()
-
-        if success:
-            cv2.imwrite(file_instance.file.path + ".jpg", image)
-            print("Video file processed")
-        else:
-            raise ValueError("Error processing video")
-    except Exception as e:
-        raise ValueError(f"Error processing video: {e}")
