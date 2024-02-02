@@ -11,7 +11,6 @@ RUN apt-get update \
     && poetry install
 
 COPY backend/file_uploader .
-COPY index.html .
 
 ENV DJANGO_SETTINGS_MODULE=file_uploader.settings
 
