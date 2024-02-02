@@ -5,6 +5,8 @@ from django.urls import include, path, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 
+from api.views import Index
+
 schema_view = get_schema_view(
     openapi.Info(
         title="File uploader API",
@@ -17,7 +19,8 @@ schema_view = get_schema_view(
 
 main_urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls'))
+    path('api/', include('api.urls')),
+    path('index/', Index.as_view(), name='index')
 ]
 docs_urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$',

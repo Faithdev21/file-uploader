@@ -1,3 +1,5 @@
+from django.shortcuts import render
+from django.views import View
 from rest_framework import mixins, status
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -5,6 +7,13 @@ from rest_framework.viewsets import GenericViewSet
 from api.serializers import FileSerializer
 from api.tasks import process_file
 from files.models import File
+
+
+class Index(View):
+    template_name = 'index.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
 
 
 class FileUploadView(mixins.CreateModelMixin,
