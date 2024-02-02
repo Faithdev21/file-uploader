@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Uploader</title>
+</head>
+<body>
+
+<h1>Обработанные файлы</h1>
+<ul id="processedFiles"></ul>
+
+<h1>Необработанные файлы</h1>
+<ul id="unprocessedFiles"></ul>
+
+<script>
+    fetch('/api/files/')
+        .then(response => response.json())
+        .then(data => {
+            const processedFilesList = document.getElementById('processedFiles');
+            const unprocessedFilesList = document.getElementById('unprocessedFiles');
+
+            data.forEach(file => {
+                const listItem = document.createElement('li');
+                listItem.textContent = file.file;
+
+                if (file.processed) {
+                    listItem.style.color = 'green';
+                    processedFilesList.appendChild(listItem);
+                } else {
+                    listItem.style.color = 'red';
+                    unprocessedFilesList.appendChild(listItem);
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching files:', error));
+</script>
+
+</body>
+</html>
