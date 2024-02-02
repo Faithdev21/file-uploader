@@ -34,6 +34,7 @@ ffprobe = "^0.5"
 flake8 = "^7.0.0"
 black = "^23.12.1"
 isort = "^5.13.2"
+coverage = "^7.4.1"
 
 [build-system]
 requires = ["poetry-core"]

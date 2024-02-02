@@ -7,7 +7,9 @@ from api.serializers import FileSerializer
 from api.tasks import process_file
 
 
-class FileUploadView(ModelViewSet):
+class FileUploadView(mixins.CreateModelMixin,
+                     GenericViewSet):
+    """ViewSet for uploading files."""
     queryset = File.objects.all()
     serializer_class = FileSerializer
 
@@ -27,6 +29,7 @@ class FileUploadView(ModelViewSet):
 
 class FileListView(mixins.ListModelMixin,
                    GenericViewSet):
+    """ViewSet for reading files."""
     queryset = File.objects.all()
     serializer_class = FileSerializer
 
@@ -36,4 +39,4 @@ class FileListView(mixins.ListModelMixin,
             serializer = self.serializer_class(files, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": str(e)}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

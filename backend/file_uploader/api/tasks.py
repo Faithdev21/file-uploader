@@ -1,8 +1,6 @@
 import os
 
 from celery import shared_task
-from pydub import AudioSegment
-from pydub.playback import play
 
 from files.models import File
 import magic
