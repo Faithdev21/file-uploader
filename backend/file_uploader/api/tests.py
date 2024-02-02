@@ -1,19 +1,14 @@
 from collections import OrderedDict
-from datetime import datetime
-from http import HTTPStatus
-from time import sleep
-from unittest.mock import patch, mock_open
+from unittest.mock import mock_open, patch
 
-from celery.result import AsyncResult
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from api.tasks import process_file
 from files.models import File
-
-from api.tasks import process_file, process_pdf, process_text, process_image
 
 
 class FileUploadingTest(TestCase):

@@ -1,7 +1,7 @@
-from django.urls import path, include
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from api.views import FileUploadView, FileListView
 
+from api.views import FileListView, FileUploadView
 
 router = DefaultRouter()
 router.register('upload', FileUploadView, basename='file-upload')

@@ -1,12 +1,12 @@
 import os
 
+import fitz
+import magic
+import textract
 from celery import shared_task
+from PIL import Image
 
 from files.models import File
-import magic
-from PIL import Image
-import textract
-import fitz
 
 
 @shared_task

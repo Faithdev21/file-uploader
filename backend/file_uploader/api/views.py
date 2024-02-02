@@ -1,10 +1,10 @@
-from rest_framework import status, mixins, viewsets
+from rest_framework import mixins, status
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.viewsets import GenericViewSet
 
-from files.models import File
 from api.serializers import FileSerializer
 from api.tasks import process_file
+from files.models import File
 
 
 class FileUploadView(mixins.CreateModelMixin,
@@ -24,7 +24,10 @@ class FileUploadView(mixins.CreateModelMixin,
             process_file.delay(file_instance.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class FileListView(mixins.ListModelMixin,
@@ -39,4 +42,7 @@ class FileListView(mixins.ListModelMixin,
             serializer = self.serializer_class(files, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_405_METHOD_NOT_ALLOWED
+            )
