@@ -20,11 +20,3 @@ RUN python manage.py collectstatic \
 EXPOSE 8000
 
 CMD ["poetry", "run", "gunicorn", "--bind", "0.0.0.0:8000", "file_uploader.wsgi:application"]
-
-
-
-
-
-
-
-

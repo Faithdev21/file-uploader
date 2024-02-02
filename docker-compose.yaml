@@ -4,6 +4,7 @@ volumes:
   pg_data:
   static:
   media:
+  uploads:
 
 services:
   db:
@@ -23,8 +24,10 @@ services:
     volumes:
       - static:/static/
       - media:/app/media/
+      - uploads:/app/uploads/
     depends_on:
       - db
+      - redis
     ports:
       - "8000:8000"
 
@@ -49,3 +52,15 @@ services:
     restart: always
     depends_on:
       - db
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - backend/file_uploader/.env
+    volumes:
+      - uploads:/app/uploads/
+    command: celery -A file_uploader.celery worker --beat -l info
+    depends_on:
+      - backend
